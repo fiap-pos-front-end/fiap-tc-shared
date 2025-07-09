@@ -22,6 +22,6 @@ jobs:
           echo "@fiap-pos-front-end:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - name: Publish to GitHub Packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
         run: |
           npm publish
