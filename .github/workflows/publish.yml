@@ -1,0 +1,21 @@
+name: Publish Shared Lib
+on:
+  push:
+    tags:
+      - "v*.*.*"
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          registry-url: https://npm.pkg.github.com
+      - run: npm ci && npm run build shared
+      - name: Publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+        run: |
+          cd dist/shared
+          npm publish
