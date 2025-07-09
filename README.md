@@ -1,4 +1,4 @@
-# event-bus
+# fiap-tc-shared
 
 > 🚀 Biblioteca leve e agnóstica para troca de eventos entre Micro-Frontends Angular 19 e React.
 
@@ -54,8 +54,8 @@
 
 ```bash
 # Clone o repositório e entre nele
-git clone https://github.com/fiap-pos-front-end/event-bus.git
-cd event-bus
+git clone https://github.com/fiap-pos-front-end/fiap-tc-shared.git
+cd fiap-tc-shared
 
 # Instale peer- e dev-dependencies
 npm install --save-peer mitt @angular/core @angular/common
@@ -67,7 +67,7 @@ npm install --save-dev typescript rollup rollup-plugin-typescript2 @types/mitt
 ## Estrutura do Projeto
 
 ```
-event-bus/
+fiap-tc-shared/
 ├─ src/
 │  ├─ bus.ts               # Core usando mitt
 │  ├─ angular/
@@ -134,7 +134,7 @@ export default {
 1. Instale no seu Angular:
 
    ```bash
-   npm install @fiap-pos-front-end/event-bus mitt
+   npm install @fiap-pos-front-end/fiap-tc-shared mitt
    ```
 
 2. Injete e use no seu `SharedService` ou componente:
@@ -151,13 +151,13 @@ export default {
 1. Instale no seu React:
 
    ```bash
-   npm install @fiap-pos-front-end/event-bus mitt
+   npm install @fiap-pos-front-end/fiap-tc-shared mitt
    ```
 
 2. Use os hooks:
 
    ```tsx
-   import { useEventBus, useEmit } from "@fiap-pos-front-end/event-bus";
+   import { useEventBus, useEmit } from "@fiap-pos-front-end/fiap-tc-shared";
 
    function MyComponent() {
      const emit = useEmit<number>();
