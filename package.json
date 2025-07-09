@@ -1,9 +1,8 @@
 {
   "name": "@fiap-pos-front-end/fiap-tc-shared",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "browser": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "restricted"
@@ -12,46 +11,10 @@
     "dist"
   ],
   "peerDependencies": {
-    "@angular/common": "^19.2.0",
-    "@angular/core": "^19.2.0",
-    "@types/react": "^19.1.8",
-    "mitt": "^3.0.1",
-    "react": "^19.1.0"
-  },
-  "peerDependenciesMeta": {
-    "@angular/core": {
-      "optional": true
-    },
-    "@angular/common": {
-      "optional": true
-    },
-    "react": {
-      "optional": true
-    },
-    "mitt": {
-      "optional": false
-    }
+    "mitt": "^3.0.0"
   },
   "scripts": {
-    "build": "rollup -c",
-    "test": "echo \"No tests defined\" && exit 0"
-  },
-  "exports": {
-    "./react": {
-      "import": "./dist/react/index.esm.js",
-      "require": "./dist/react/index.cjs.js",
-      "types": "./dist/react/index.d.ts"
-    },
-    "./angular": {
-      "import": "./dist/angular/index.esm.js",
-      "require": "./dist/angular/index.cjs.js",
-      "types": "./dist/angular/index.d.ts"
-    },
-    ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js",
-      "types": "./dist/index.d.ts"
-    }
+    "build": "rollup -c"
   },
   "devDependencies": {
     "rollup": "^4.44.2",

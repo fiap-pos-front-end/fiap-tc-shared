@@ -1,1 +1,1 @@
-export { emit, on, off } from "./bus";
+export { emitEvent, onEvent, offEvent } from "./bus";

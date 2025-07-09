@@ -1,13 +1,11 @@
 import mitt, { Handler } from "mitt";
 
 export type Events = Record<string, any>;
-const emitter = mitt<Events>();
+const bus = mitt<Events>();
 
-export const emit = (event: keyof Events, payload?: any) =>
-  emitter.emit(event, payload);
-
-export const on = (event: keyof Events, handler: Handler) =>
-  emitter.on(event, handler);
-
-export const off = (event: keyof Events, handler: Handler) =>
-  emitter.off(event, handler);
+export const emitEvent = (event: keyof Events, payload?: any) =>
+  bus.emit(event, payload);
+export const onEvent = (event: keyof Events, handler: Handler) =>
+  bus.on(event, handler);
+export const offEvent = (event: keyof Events, handler: Handler) =>
+  bus.off(event, handler);
