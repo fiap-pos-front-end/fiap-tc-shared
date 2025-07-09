@@ -1,35 +1,37 @@
 # Shared Event Bus
 
-> 🚀 Agnóstico, zero-dependency, leve e tipado em TypeScript para comunicação entre micro-frontends.
+> 🌐 Agnóstico, singleton global e tipado em TypeScript para comunicação entre micro-frontends.
 
 ## Sumário
 
-- Funcionalidades
-- Pré-requisitos
-- Instalação
-- Estrutura do Projeto
-- Build
-- Publicação
-- Uso
-  - Angular
-  - React
-- Contribuição
-- Licença
+- [Funcionalidades](#funcionalidades)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação](#instalação)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Build](#build)
+- [Publicação](#publicação)
+- [Uso](#uso)
+  - [API](#api)
+  - [Angular](#angular)
+  - [React](#react)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
 ---
 
 ## Funcionalidades
 
-- **Framework-agnóstico:** não importa se é Angular, React, Vue ou Vanilla.
-- **Zero-dependency:** só precisa de `mitt` (2 KB).
-- **TypeScript:** tipagem forte para maior segurança.
-- **Micro-frontends:** compartilhe eventos entre apps isolados.
+- **Framework-agnóstico**: funciona em qualquer app JS (Angular, React, Vue, Vanilla…)
+- **Singleton global**: única instância em `globalThis`, compartilhada por todos os MFEs na mesma página
+- **Replay automático**: quem se inscreve recebe o último valor emitido
+- **TypeScript**: interface forte e segura
+- **Leve**: depende só de `mitt` (2 KB)
 
 ---
 
 ## Pré-requisitos
 
-- Node.js ≥ 14
+- Node.js ≥ 14
 - npm ou yarn
 
 ---
@@ -57,7 +59,8 @@ npm install --save-dev typescript rollup rollup-plugin-typescript2 @types/mitt
 ```
 fiap-tc-shared/
 ├── src/
-│   └── index.ts         # Core: emitEvent, onEvent, offEvent
+│   ├── EventBus.ts      # interface + implementação SOLID
+│   └── index.ts         # singleton global + re-exports
 ├── dist/                # Saída do build
 ├── package.json
 ├── tsconfig.json
@@ -70,10 +73,6 @@ fiap-tc-shared/
 
 ```bash
 npm run build
-# gera:
-# dist/index.cjs.js
-# dist/index.esm.js
-# dist/index.d.ts
 ```
 
 ---
@@ -87,14 +86,38 @@ Pacote privado no GitHub Packages ou npm Registry
    ```bash
    npm version patch
    ```
-3. Publique:
+3. Build:
    ```bash
-   npm publish --access restricted
+   npm run build
+   ```
+4. Publique:
+   ```bash
+   npm publish
    ```
 
 ---
 
 ## Uso
+
+### API
+
+Importe as funções principais:
+
+```ts
+import {
+  emitEvent,
+  onEvent,
+  offEvent,
+  getLastEvent,
+} from "@fiap-pos-front-end/fiap-tc-shared";
+```
+
+| Função                                 | Descrição                                                                  |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| `emitEvent(event, payload)`            | Emite event com payload e armazena como último valor.                      |
+| `onEvent(event, handler, replayLast?)` | Inscreve handler; se replayLast=true, recebe imediatamente último payload. |
+| `offEvent(event, handler)`             | Remove assinatura de handler em event.                                     |
+| `getLastEvent(event)`                  | Retorna o último payload de event, ou undefined.                           |
 
 ### Angular
 
@@ -102,75 +125,64 @@ Pacote privado no GitHub Packages ou npm Registry
    ```bash
    npm install @fiap-pos-front-end/fiap-tc-shared mitt
    ```
-2. Crie um service:
+2. Use onde precisar:
 
    ```ts
-   import { Injectable } from "@angular/core";
+   import { Component, OnInit } from "@angular/core";
    import {
      emitEvent,
      onEvent,
-     offEvent,
-   } from "@fiap-pos-front-end/fiap-tc-shared";
+     getLastEvent,
+   } from "@minhaorg/shared-event-bus";
+   @Component({})
+   export class HomeComponent implements OnInit {
+     balance = 0;
 
-   @Injectable({ providedIn: "root" })
-   export class EventBusService {
-     emit = emitEvent;
-     on = onEvent;
-     off = offEvent;
+     ngOnInit(): void {
+       this.balance = getLastEvent("balanceChange") ?? 0;
+
+       onEvent<number>("balanceChange", (v) => (this.balance = v));
+     }
+
+     increment(): void {
+       emitEvent("balanceChange", this.balance + 1);
+     }
    }
-   ```
-
-3. Use onde precisar:
-   ```ts
-   this.eventBus.emit("balanceChange", 123);
-   this.eventBus.on("balanceChange", (val) => console.log(val));
    ```
 
 ### React
 
 1. Instale no seu MFE React:
-   ```bash
-   npm install @fiap-pos-front-end/fiap-tc-shared mitt
-   ```
-2. Crie hooks (no próprio projeto React):
 
-   ```ts
-   // useEventBus.ts
-   import { useEffect } from "react";
-   import { onEvent, offEvent } from "@fiap-pos-front-end/fiap-tc-shared";
+```bash
+npm install @fiap-pos-front-end/fiap-tc-shared mitt
+```
 
-   export function useEventBus<T>(
-     event: string,
-     handler: (payload: T) => void
-   ) {
-     useEffect(() => {
-       onEvent(event, handler);
-       return () => offEvent(event, handler);
-     }, [event, handler]);
-   }
-   ```
-
-   ```ts
-   // useEmit.ts
-   import { emitEvent } from "@fiap-pos-front-end/fiap-tc-shared";
-   export const useEmit = () => emitEvent;
-   ```
-
-3. No componente React:
+2. No componente React:
 
    ```tsx
    import { useState } from "react";
-   import { useEventBus, useEmit } from "./hooks";
+   import {
+     emitEvent,
+     onEvent,
+     getLastEvent,
+     offEvent,
+   } from "@minhaorg/shared-event-bus";
 
-   function BalanceComponent() {
-     const [balance, setBalance] = useState(0);
-     const emit = useEmit<number>();
+   export function BalanceComponent() {
+     const [balance, setBalance] = useState<number>(
+       () => getLastEvent<number>("balanceChange") ?? 0
+     );
 
-     useEventBus<number>("balanceChange", setBalance);
+     useEffect(() => {
+       const handler = (v: number) => setBalance(v);
+       onEvent<number>("balanceChange", handler);
+       return () => offEvent("balanceChange", handler);
+     }, []);
 
      return (
-       <button onClick={() => emit("balanceChange", balance + 1)}>
-         Incrementar balance ({balance})
+       <button onClick={() => emitEvent("balanceChange", balance + 1)}>
+         Balance: {balance}
        </button>
      );
    }
