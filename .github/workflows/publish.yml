@@ -3,18 +3,36 @@ on:
   push:
     tags:
       - "v*.*.*"
+
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
-          registry-url: https://npm.pkg.github.com
-      - run: npm ci && npm run build
-      - name: Publish to GitHub Packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@fiap-pos-front-end"
+
+      - name: Configure npm for GitHub Packages
         run: |
-          npm publish
+          echo "@fiap-pos-front-end:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
+
+      - name: Install & Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Publish to GitHub Packages
+        run: npm publish --access restricted
