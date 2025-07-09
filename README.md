@@ -1,59 +1,105 @@
-# SharedWorkspace
+# @fiap-pos-front-end/shared
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
+> Biblioteca Angular para comunicação reativa entre Shell e Microfrontends.
 
-## Development server
+## Descrição
 
-To start a local development server, run:
+O `@fiap-pos-front-end/shared` fornece um serviço singleton (`SharedService`) baseado em RxJS para compartilhar o estado do **saldo** (balance) e outros eventos de forma reativa entre diferentes aplicações Angular (Shell e MFEs) usando Module Federation.
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Instalação
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Instale o pacote do GitHub Packages:
 
 ```bash
-ng generate component component-name
+npm install @fiap-pos-front-end/shared
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+> **Observação:** configure seu `.npmrc` para apontar ao registry do GitHub Packages da sua organização:
+>
+> ```ini
+> @fiap-pos-front-end:registry=https://npm.pkg.github.com
+> //npm.pkg.github.com/:_authToken=SEU_TOKEN
+> ```
 
-```bash
-ng generate --help
+---
+
+## Uso
+
+### 1. Configurar Module Federation
+
+Em `webpack.config.js` do Shell e do Remote, compartilhe a lib como singleton:
+
+```js
+shared: {
+  '@fiap-pos-front-end/shared': {
+    singleton: true,
+    strictVersion: true,
+    requiredVersion: 'auto',
+    eager: true
+  },
+  '@angular/core': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+  '@angular/common': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+  'rxjs': { singleton: true, strictVersion: true, requiredVersion: 'auto' }
+}
 ```
 
-## Building
+### 2. Injetar e usar o `SharedService`
 
-To build the project run:
+Em qualquer componente ou serviço Angular (Shell ou Remote):
 
-```bash
-ng build
+```ts
+import { Component, OnInit, inject } from "@angular/core";
+import { SharedService } from "@fiap-pos-front-end/shared";
+
+@Component({ selector: "app-home", templateUrl: "./home.component.html" })
+export class HomeComponent implements OnInit {
+  balance = 0;
+  private shared = inject(SharedService);
+
+  ngOnInit() {
+    this.shared.balance$.subscribe((value) => {
+      this.balance = value;
+    });
+  }
+}
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Para publicar um novo valor de **balance**:
 
-## Running unit tests
+```ts
+import { SharedService } from '@fiap-pos-front-end/shared';
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+constructor(private shared: SharedService) {}
 
-```bash
-ng test
+onTransactionComplete(newBalance: number) {
+  this.shared.setBalance(newBalance);
+}
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## API
 
-```bash
-ng e2e
-```
+### `balance$: Observable<number>`
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Fluxo reativo que emite o valor atual do saldo sempre que `setBalance()` é chamado.
 
-## Additional Resources
+### `setBalance(balance: number): void`
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Atualiza o valor do saldo emitido pelo `balance$`.
+
+### `getBalance(): number`
+
+Retorna o valor atual do saldo de maneira síncrona.
+
+### `getHello(): string`
+
+Método de teste que retorna uma saudação: `"Olá do SharedService".`
+
+---
+
+## Licença
+
+MIT © fiap-pos-front-end
