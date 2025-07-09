@@ -1,6 +1,6 @@
 {
   "name": "@fiap-pos-front-end/fiap-tc-shared",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
@@ -38,17 +38,17 @@
     "publish": "git tag v1.0.3 && git push --tags"
   },
   "exports": {
-    "./react": {
-      "import": "./dist/react/index.js",
-      "types": "./dist/react/index.d.ts"
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
     },
     "./angular": {
       "import": "./dist/angular/index.js",
       "types": "./dist/angular/index.d.ts"
     },
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+    "./react": {
+      "import": "./dist/react/index.js",
+      "types": "./dist/react/index.d.ts"
     }
   },
   "devDependencies": {
