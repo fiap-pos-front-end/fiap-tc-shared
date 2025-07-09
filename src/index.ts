@@ -1,8 +1,16 @@
 import { EventBus, IEventBus } from "./EventBus";
 
-export type Events = Record<string, any>;
+const BUS_KEY = Symbol.for("@minhaorg/shared-event-bus");
 
-const defaultBus: IEventBus<Events> = new EventBus<Events>();
+function getGlobalBus(): IEventBus<Record<string, any>> {
+  const g = globalThis as any;
+  if (!g[BUS_KEY]) {
+    g[BUS_KEY] = new EventBus();
+  }
+  return g[BUS_KEY];
+}
+
+const defaultBus = getGlobalBus();
 
 export const emitEvent = defaultBus.emit.bind(defaultBus);
 export const onEvent = defaultBus.on.bind(defaultBus);

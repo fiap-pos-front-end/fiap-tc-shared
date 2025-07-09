@@ -122,8 +122,8 @@ Pacote privado no GitHub Packages ou npm Registry
 
 3. Use onde precisar:
    ```ts
-   this.eventBus.emit("balanceChanged", 123);
-   this.eventBus.on("balanceChanged", (val) => console.log(val));
+   this.eventBus.emit("balanceChange", 123);
+   this.eventBus.on("balanceChange", (val) => console.log(val));
    ```
 
 ### React
@@ -166,10 +166,10 @@ Pacote privado no GitHub Packages ou npm Registry
      const [balance, setBalance] = useState(0);
      const emit = useEmit<number>();
 
-     useEventBus<number>("balanceChanged", setBalance);
+     useEventBus<number>("balanceChange", setBalance);
 
      return (
-       <button onClick={() => emit("balanceChanged", balance + 1)}>
+       <button onClick={() => emit("balanceChange", balance + 1)}>
          Incrementar balance ({balance})
        </button>
      );
