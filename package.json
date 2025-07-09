@@ -1,6 +1,6 @@
 {
   "name": "@fiap-pos-front-end/fiap-tc-shared",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
@@ -37,17 +37,20 @@
     "test": "echo \"No tests defined\" && exit 0"
   },
   "exports": {
-    ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+    "./react": {
+      "import": "./dist/react/index.esm.js",
+      "require": "./dist/react/index.cjs.js",
+      "types": "./dist/react/index.d.ts"
     },
     "./angular": {
-      "import": "./dist/angular/index.js",
+      "import": "./dist/angular/index.esm.js",
+      "require": "./dist/angular/index.cjs.js",
       "types": "./dist/angular/index.d.ts"
     },
-    "./react": {
-      "import": "./dist/react/index.js",
-      "types": "./dist/react/index.d.ts"
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "devDependencies": {
