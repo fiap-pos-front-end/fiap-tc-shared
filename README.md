@@ -90,9 +90,18 @@ Pacote privado no GitHub Packages ou npm Registry
    ```bash
    npm run build
    ```
-4. Publique:
+4. Publique Manual
+
    ```bash
    npm publish
+   ```
+
+   ou
+
+   Publique pelo GitHub Actions
+
+   ```bash
+   git push --tags
    ```
 
 ---
