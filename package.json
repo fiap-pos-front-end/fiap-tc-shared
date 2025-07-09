@@ -34,8 +34,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "test": "echo \"No tests defined\" && exit 0",
-    "publish": "git tag v0.0.1 && git push --tags"
+    "test": "echo \"No tests defined\" && exit 0"
   },
   "exports": {
     ".": {
