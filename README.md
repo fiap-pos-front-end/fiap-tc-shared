@@ -44,20 +44,16 @@ npm install @fiap-pos-front-end/fiap-tc-shared
 
 ```ts
 // Event Bus
-import {
-  onEvent,
-  emitEvent,
-  getLast,
-} from "@fiap-pos-front-end/fiap-tc-shared";
+import { onEvent, emitEvent, getLast } from '@fiap-pos-front-end/fiap-tc-shared';
 
 // Emitir evento
-emitEvent("user:login", { id: 123, name: "Fiap" });
+emitEvent('user:login', { id: 123, name: 'Fiap' });
 
 // Ouvir evento
-onEvent("user:login", (payload) => console.log("Entrou:", payload.name));
+onEvent('user:login', (payload) => console.log('Entrou:', payload.name));
 
 // Obter último valor do evento
-getLast("user:login", (payload) => console.log("Entrou:", payload.name));
+getLast('user:login', (payload) => console.log('Entrou:', payload.name));
 ```
 
 ## Publicar pacote
@@ -77,3 +73,12 @@ getLast("user:login", (payload) => console.log("Entrou:", payload.name));
    ```
 
 4. Enviar alterações pro GitHub
+
+### Detalhes da publicação
+
+> Você vai precisar ter acesso ao pacote privado da nossa organização no Github. Para isso, configure seu acesso (no CI ou local via `.npmrc`):
+
+1. Duplique o arquivo `.npmrc-example` da raiz
+2. Crie, através do GitHub, um personal token (https://github.com/settings/tokens/new) - só assim você conseguirá baixar nosso pacote privado
+3. Coloque o token que você copiou do GitHub em **todos** os diretórios que consomem o repositório privado (ex: `fiap-tc-shell`, `fiap-tc-angular`)
+4. Rode `npm run install:all` e tudo tem que funcionar :)
