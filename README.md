@@ -64,13 +64,15 @@ getLast("user:login", (payload) => console.log("Entrou:", payload.name));
 
 1. Commitar alterações pro GitHub
 
-2. Atualizar de versão:
+2. Atualizar de versão do projeto e criar tag no GitHub:
 
    ```bash
    npm version patch
    ```
 
-3. Publique pelo GitHub Actions
+3. Enviar alterações pro GitHub
+
+4. Publique pelo GitHub Actions
 
    ```bash
    git push --tags
