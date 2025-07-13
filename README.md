@@ -75,3 +75,5 @@ getLast("user:login", (payload) => console.log("Entrou:", payload.name));
    ```bash
    git push --tags
    ```
+
+4. Enviar alterações pro GitHub
