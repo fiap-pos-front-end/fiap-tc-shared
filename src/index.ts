@@ -1,6 +1,6 @@
 import { EventBus, IEventBus } from "./EventBus";
 
-const BUS_KEY = Symbol.for("@minhaorg/shared-event-bus");
+const BUS_KEY = Symbol.for("@fiap-pos-front-end/fiap-tc-shared");
 
 function getGlobalBus(): IEventBus<Record<string, any>> {
   const g = globalThis as any;
