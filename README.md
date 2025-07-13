@@ -70,9 +70,7 @@ getLast("user:login", (payload) => console.log("Entrou:", payload.name));
    npm version patch
    ```
 
-3. Enviar alterações pro GitHub
-
-4. Publique pelo GitHub Actions
+3. Publique pelo GitHub Actions
 
    ```bash
    git push --tags
