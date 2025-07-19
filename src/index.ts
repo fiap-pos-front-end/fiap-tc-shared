@@ -1,6 +1,6 @@
-import { EventBus, IEventBus } from "./EventBus";
+import { EventBus, IEventBus } from './EventBus';
 
-const BUS_KEY = Symbol.for("@fiap-pos-front-end/fiap-tc-shared");
+const BUS_KEY = Symbol.for('@fiap-pos-front-end/fiap-tc-shared');
 
 function getGlobalBus(): IEventBus<Record<string, any>> {
   const g = globalThis as any;
@@ -16,3 +16,5 @@ export const emitEvent = defaultBus.emit.bind(defaultBus);
 export const onEvent = defaultBus.on.bind(defaultBus);
 export const offEvent = defaultBus.off.bind(defaultBus);
 export const getLastEvent = defaultBus.getLast.bind(defaultBus);
+
+export * from './models';
