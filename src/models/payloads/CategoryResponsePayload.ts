@@ -1,4 +1,4 @@
-export interface CategoryDto {
+export interface CategoryResponsePayload {
   id: string;
   name: string;
 }
