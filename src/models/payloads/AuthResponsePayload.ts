@@ -1,5 +1,3 @@
-export interface RegisterAuthResponsePayload {
+export type AuthResponsePayload = {
   access_token: string;
-}
-
-export interface LoginAuthResponsePayload {}
+};
