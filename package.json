@@ -1,6 +1,6 @@
 {
   "name": "@fiap-pos-front-end/fiap-tc-shared",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
