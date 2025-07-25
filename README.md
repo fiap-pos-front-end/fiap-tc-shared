@@ -1,4 +1,4 @@
-# Fiap Tech Challeng Shared
+# Fiap Tech Challenge Shared
 
 **Biblioteca compartilhada** de utilitários e componentes para os Microfrontends do FIAP Tech Challenge.
 
