@@ -1,2 +1,2 @@
-export * from './Events';
-export * from './TransactionType';
+export * from "./events";
+export * from "./transaction-type";

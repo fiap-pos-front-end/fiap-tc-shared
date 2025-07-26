@@ -1,3 +1,1 @@
-export * from './AuthResponsePayload';
-export * from './CategoryResponsePayload';
-export * from './TransfersResponsePayload';
+export * from "./auth-response";
