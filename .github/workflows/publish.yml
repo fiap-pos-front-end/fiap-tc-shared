@@ -15,10 +15,9 @@ jobs:
         with:
           node-version: "18"
           registry-url: https://npm.pkg.github.com
-      - run: npm ci && npm run build
+      - run: npm ci && npm pack --dry-run && npm run build
       - name: Publish to GitHub Packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
         run: |
-          npm pack --dry-run
           npm publish
