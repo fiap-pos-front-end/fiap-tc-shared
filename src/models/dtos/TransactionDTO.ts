@@ -5,5 +5,6 @@ export type TransactionDTO = {
   type: string;
   amount: number;
   category: CategoryDTO;
+  categoryId: number;
   date: Date;
 };

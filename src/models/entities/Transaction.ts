@@ -4,22 +4,22 @@ import { Money } from "./Money";
 
 export class Transaction {
   private constructor(
-    public readonly id: string,
+    public readonly id: number,
     public readonly type: TransactionType,
     public readonly amount: Money,
     public readonly date: Date,
-    public readonly categoryId: string,
+    public readonly categoryId: number,
     public readonly category?: CategoryDTO
   ) {}
 
   public static create(
-    id: string,
+    id: number,
     type: TransactionType,
     amount: number,
     date: Date,
     category: CategoryDTO
   ): Transaction {
-    return new Transaction(id, type, Money.from(amount), date, category);
+    return new Transaction(id, type, Money.from(amount), date, category.id);
   }
 
   // Domain methods
