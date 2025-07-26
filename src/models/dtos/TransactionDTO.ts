@@ -1,7 +1,9 @@
+import { CategoryDTO } from "./CategoryDTO";
+
 export type TransactionDTO = {
   id: number;
   type: string;
   amount: number;
-  category: string;
+  category: CategoryDTO;
   date: Date;
 };
