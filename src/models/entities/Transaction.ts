@@ -1,4 +1,4 @@
-import { TransactionType } from "../enums";
+import { TransactionType } from "../enums/transaction-type";
 import { Category } from "./category";
 
 export interface Transaction {
