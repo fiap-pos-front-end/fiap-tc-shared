@@ -79,6 +79,6 @@ getLast('user:login', (payload) => console.log('Entrou:', payload.name));
 > Você vai precisar ter acesso ao pacote privado da nossa organização no Github. Para isso, configure seu acesso (no CI ou local via `.npmrc`):
 
 1. Duplique o arquivo `.npmrc-example` da raiz
-2. Crie, através do GitHub, um personal token (https://github.com/settings/tokens/new) - só assim você conseguirá baixar nosso pacote privado
+2. Crie, através do GitHub, um personal token classic (https://github.com/settings/tokens/new) - só assim você conseguirá baixar nosso pacote privado
 3. Coloque o token que você copiou do GitHub em **todos** os diretórios que consomem o repositório privado (ex: `fiap-tc-shell`, `fiap-tc-angular`)
 4. Rode `npm run install:all` e tudo tem que funcionar :)
