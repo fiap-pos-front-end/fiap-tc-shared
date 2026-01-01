@@ -18,6 +18,6 @@ jobs:
       - run: npm ci && npm run build
       - name: Publish to GitHub Packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_1 }}
         run: |
           npm publish
